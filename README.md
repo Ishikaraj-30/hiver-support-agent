@@ -13,6 +13,6 @@ The agent handles three coordinated tasks per incoming tweet:
 
 ### 1. Clone repository and install dependencies
 ```bash
-git clone [https://github.com/Ishika-29-raj/hiver-support-agent.git](https://github.com/Ishika-29-raj/hiver-support-agent.git)
+git clone [https://github.com/Ishikaraj-30/hiver-support-agent.git](https://github.com/Ishikaraj-30/hiver-support-agent.git)
 cd hiver-support-agent
 pip install -r requirements.txt
