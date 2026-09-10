@@ -1,18 +1,27 @@
-content = """# AI Customer Support Agent for @AmazonHelp
+# AI Support Agent for @AmazonHelp
 
-An end-to-end AI triage and response agent built for `@AmazonHelp` Twitter customer support using Retrieval-Augmented Generation (BM25 + Gemini 3.5 Flash Lite).
+An automated customer support triage and response agent built for `@AmazonHelp` Twitter data using Retrieval-Augmented Generation (BM25 + Gemini 3.5 Flash Lite).
 
-The agent handles three coordinated tasks per incoming tweet:
-1. **Intent Classification**: Classifies into a 7-class operational taxonomy.
-2. **Escalation Gating**: Decides whether to auto-handle or escalate to human specialists with a stated policy reason.
-3. **Grounded Reply Generation**: Drafts policy-compliant, privacy-safe responses (<280 characters) grounded in historical resolution data.
+## Quickstart
 
----
+1. Install dependencies:
+   pip install -r requirements.txt
 
-## Quickstart: Reproduce Headline Benchmark (< 5 Minutes)
+2. Set API key:
+   $env:GEMINI_API_KEY="your-api-key"
 
-### 1. Clone repository and install dependencies
-```bash
-git clone [https://github.com/Ishikaraj-30/hiver-support-agent.git](https://github.com/Ishikaraj-30/hiver-support-agent.git)
-cd hiver-support-agent
-pip install -r requirements.txt
+3. Run benchmark:
+   python scripts/run_evaluation.py
+
+4. Interactive chat:
+   python scripts/chat.py
+
+## Key Results
+- Dangerous False Auto-Handle: Reduced to 6.1% (vs 42.9% baseline).
+- Escalation Accuracy: 48.9%
+- LLM Judge Quality: 3.61 / 5.0
+
+## Deliverables
+- Detailed Analysis: REPORT.md
+- Engineering Choices: decision_log.md
+- Golden Evaluation Dataset: eval/golden_set.csv
