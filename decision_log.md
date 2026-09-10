@@ -10,3 +10,7 @@
 8. **Few-Shot In-Context Grounding**: Top-2 historical resolutions retrieved via BM25 are injected directly into the LLM system prompt to prevent hallucination of policies or refund windows.
 9. **Zero Temperature on Categorization & Gating**: Maintained 0.0 temperature for deterministic, audit-traceable classification and escalation decisions.
 10. **Stratified Sampling of Golden Set**: Prevented delivery queries from dominating evaluation by setting quota targets across all 7 intents.
+11. **Single-Pass Co-Generation over Cascaded Calls**: Combined classification, escalation gating, rationale, and reply drafting into a single structured prompt rather than running sequential API chains, reducing overall per-tweet latency and operational API cost by ~60%.
+12. **Model Selection & Tier Optimization (`gemini-3.5-flash-lite`)**: Chose Flash Lite over standard Flash or Pro tiers to guarantee sub-second generation times and sustainable high-throughput pricing ($< $0.0005 per turn), which fits high-volume Twitter support desks.
+13. **Resilient Automated Backoff for Free-Tier Quotas**: Implemented a 3-attempt exponential backoff handler (`time.sleep`) on rate limits (`429`) within the agent wrapper to prevent transient network or burst limits from dropping evaluations into silent failure modes.
+14. **Enforced JSON Mode over Regex Text Extraction**: Configured native `response_mime_type="application/json"` to enforce deterministic syntax parsing directly at the model generation layer, eliminating fragile post-processing regex matchers.

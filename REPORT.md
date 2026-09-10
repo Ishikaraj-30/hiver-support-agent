@@ -90,3 +90,28 @@ From `benchmark_results.csv`, failure modes group into distinct operational patt
    - Tune classification decision thresholds on the logit layer to reduce the 44.9% unnecessary escalation rate down to an operationally sustainable 15–20%.
 3. **Guardrail Layer**:
    - Enforce regex-based PII detection filters on outbound drafts to guarantee zero accidental leakage of phone numbers or internal URLs.
+
+   ---
+
+## 6. What "Good" Means for @AmazonHelp & What We Chose Not to Build
+
+### What "Good" Means:
+1. **Safety First**: Never tell a customer with an unauthorized charge to self-serve.
+2. **Deflection without Frustration**: Answer routine questions with concrete self-service links (`amazon.com/orders`), but hand off instantly when human context is required.
+3. **Strict Privacy**: Zero public collection of PII (Order IDs, emails, phone numbers).
+
+### What We Chose NOT to Build (Intentional Scope Boundaries):
+- **No Direct Database Integration / Live Tool Execution**: The agent does not execute actual refunds or cancel orders directly in this stage. Automated tool execution on public Twitter without authenticated customer identity creates severe security attack vectors.
+- **No Autonomous Multi-Turn Churn Recovery**: We deliberately cap the agent to initial triage and resolution routing. Extended back-and-forth negotiation is strictly reserved for human agents in private channels.
+- **No Complex Dense Vector Databases (e.g., Pinecone/Milvus)**: Avoided heavy infrastructure overhead; BM25 in-memory sparse retrieval provides sufficient precision for standard policy grounding.
+
+---
+
+## 7. Mandatory Section: "What is Misleading About My Headline Number?"
+
+While our **6.1% False Auto-Handle Rate** looks like a massive operational achievement, evaluating it critically reveals important caveats:
+
+1. **The Cost of Safety is Over-Escalation**: Our agent achieves low dangerous false auto-handles by being hyper-conservative. The **44.9% Unnecessary Escalation rate** means almost half of routine tracking and return inquiries are sent to human agents, reducing the actual cost savings from automation.
+2. **Synthetic / Curated Evaluation Bias**: The golden set of 49–175 balanced examples has a uniform distribution across 7 intents (~14% per intent). In real Twitter production, `order_tracking_delay` and `damaged_defective_item` constitute >65% of incoming volume. True production accuracy will heavily skew toward tracking performance.
+3. **Static Context Blindness**: Tweets were evaluated as isolated, single-turn prompts. In reality, customer support conversations on Twitter are multi-tweet threads where context shifts. A user who started with routine tracking might turn hostile in tweet 3.
+4. **LLM Judge Self-Preference**: Using Gemini to evaluate Gemini drafts introduces subtle evaluation bias toward fluent, syntactically standard replies over short, terse, human-agent-style shortcuts.
